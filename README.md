@@ -12,8 +12,9 @@ rates differ between computers.
 ## Install on another Fedora computer
 
 ```bash
-sudo dnf install -y git
-git clone https://github.com/michaelburciaga/sway-workstation.git
+sudo dnf install -y git gh
+gh auth login
+gh repo clone michaelburciaga/sway-workstation
 cd sway-workstation
 ./bootstrap.sh
 ```
