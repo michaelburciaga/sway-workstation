@@ -10,7 +10,7 @@ set $term env QT_QPA_PLATFORMTHEME=gtk3 ghostty
 set $web brave-origin
 set $music flatpak run com.spotify.Client
 set $menu env QT_QPA_PLATFORMTHEME=gtk3 wofi --show drun --allow-images --insensitive
-set $wallpaper @HOME@/.local/share/sway-workstation/wallpaper.jpg
+set $wallpaper /usr/share/backgrounds/default.jxl
 
 font pango:Noto Sans 10
 

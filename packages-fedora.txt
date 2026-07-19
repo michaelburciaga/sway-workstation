@@ -18,6 +18,7 @@ lxqt-policykit
 wireplumber
 playerctl
 brightnessctl
+desktop-backgrounds-compat
 pavucontrol
 blueman
 nm-connection-editor

@@ -2,7 +2,7 @@
 
 This repository recreates Michael's Fedora 44 SwayFX desktop: packages,
 Flatpak apps, Sway/Waybar/Wofi/Mako configuration, the power menu, fonts, and
-wallpaper.
+Fedora's default Sway wallpaper.
 
 It intentionally excludes passwords, browser profiles, SSH keys, GitHub
 credentials, Wi-Fi connections, caches, hostnames, and hardware drivers.
@@ -34,6 +34,14 @@ swaymsg -t get_outputs
 
 Edit `outputs.conf`, then reload Sway with `Super+Shift+C`.
 
+To use a personal wallpaper, edit `~/.config/sway/config` and change:
+
+```text
+set $wallpaper /usr/share/backgrounds/default.jxl
+```
+
+to the absolute path of an image, then reload Sway with `Super+Shift+C`.
+
 ## Publish this repository to GitHub
 
 Install and authenticate GitHub CLI, then create the private repository:
@@ -57,7 +65,7 @@ credentials, so the repository can be made public later if desired.
 - `packages-fedora.txt`: Sway and the explicitly installed workstation apps
 - `flatpaks.txt`: the current Flathub application IDs
 - `dotfiles/`: Sway, Waybar, Wofi, Mako, autostart, and power-menu files
-- `assets/wallpaper.jpg`: the desktop wallpaper
+- Fedora's packaged default wallpaper, configured in the Sway config
 - `repos/`: repository definitions needed by Brave and SwayFX
 
 GNOME's Fedora defaults remain available, but the installer does not attempt to

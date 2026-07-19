@@ -48,19 +48,15 @@ done < "$repo_dir/flatpaks.txt"
 log "Installing Sway configuration"
 install -d "$HOME/.config/sway" "$HOME/.config/waybar" \
     "$HOME/.config/wofi" "$HOME/.config/mako" "$HOME/.config/autostart" \
-    "$HOME/.local/bin" "$HOME/.local/share/sway-workstation"
+    "$HOME/.local/bin"
 
-rendered_sway_config=$(mktemp)
-trap 'rm -f "$rendered_sway_config"' EXIT
-sed "s|@HOME@|$HOME|g" "$repo_dir/dotfiles/.config/sway/config" > "$rendered_sway_config"
-install -m0644 "$rendered_sway_config" "$HOME/.config/sway/config"
+install -m0644 "$repo_dir/dotfiles/.config/sway/config" "$HOME/.config/sway/config"
 install -m0644 "$repo_dir/dotfiles/.config/waybar/config.jsonc" "$HOME/.config/waybar/config.jsonc"
 install -m0644 "$repo_dir/dotfiles/.config/waybar/style.css" "$HOME/.config/waybar/style.css"
 install -m0644 "$repo_dir/dotfiles/.config/wofi/style.css" "$HOME/.config/wofi/style.css"
 install -m0644 "$repo_dir/dotfiles/.config/mako/config" "$HOME/.config/mako/config"
 install -m0644 "$repo_dir/dotfiles/.config/autostart/blueman.desktop" "$HOME/.config/autostart/blueman.desktop"
 install -m0755 "$repo_dir/dotfiles/.local/bin/sway-power-menu" "$HOME/.local/bin/sway-power-menu"
-install -m0644 "$repo_dir/assets/wallpaper.jpg" "$HOME/.local/share/sway-workstation/wallpaper.jpg"
 
 install -m0644 "$repo_dir/dotfiles/.config/sway/outputs.conf.example" "$HOME/.config/sway/outputs.conf.example"
 if [[ ! -e $HOME/.config/sway/outputs.conf ]]; then
