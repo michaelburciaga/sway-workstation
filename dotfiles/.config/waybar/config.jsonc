@@ -1,0 +1,96 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "spacing": 4,
+    "reload_style_on_change": true,
+
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "idle_inhibitor", "bluetooth", "pulseaudio", "network", "custom/power"],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "\uf015",
+            "2": "\uf120",
+            "3": "\uf0ac",
+            "4": "\uf121",
+            "5": "\uf07b",
+            "6": "\uf075",
+            "7": "\uf001",
+            "8": "\uf03d",
+            "9": "\uf11b",
+            "10": "\uf013",
+            "high-priority-named": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            "urgent": "\uf071",
+            "default": "\uf111"
+        }
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "clock": {
+        "interval": 1,
+        "format": "{:%m-%d-%y  %I:%M %p}",
+        "format-alt": "{:%Y-%m-%d  %H:%M:%S}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "bluetooth": {
+        "format": "",
+        "format-disabled": "",
+        "format-off": "",
+        "format-on": "",
+        "format-connected": "",
+        "tooltip-format": "Bluetooth: {status}",
+        "tooltip-format-connected": "{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "blueman-manager"
+    },
+    "tray": {
+        "icon-size": 17,
+        "spacing": 8
+    },
+    "network": {
+        "format-wifi": "  {signalStrength}%",
+        "format-ethernet": "  connected",
+        "format-disconnected": "  offline",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        "on-click": "nm-connection-editor"
+    },
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "{icon}  {volume}%",
+        "format-muted": "  muted",
+        "format-icons": {
+            "headphone": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+    "cpu": {
+        "interval": 5,
+        "format": "  {usage}%",
+        "tooltip": true
+    },
+    "memory": {
+        "interval": 5,
+        "format": "  {percentage}%",
+        "tooltip-format": "{used:0.1f} GiB used"
+    },
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": "Power menu",
+        "on-click": "~/.local/bin/sway-power-menu"
+    }
+}

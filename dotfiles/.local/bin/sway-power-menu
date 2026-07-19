@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+choice=$(printf '%s\n' 'Lock' 'Suspend' 'Log out' 'Reboot' 'Power off' | \
+    wofi --dmenu --prompt 'Power' --width 320 --height 300)
+
+case "$choice" in
+    Lock) loginctl lock-session ;;
+    Suspend) systemctl suspend ;;
+    'Log out') swaymsg exit ;;
+    Reboot) systemctl reboot ;;
+    'Power off') systemctl poweroff ;;
+esac

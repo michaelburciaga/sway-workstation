@@ -1,0 +1,96 @@
+@define-color bg #171b24;
+@define-color bg-alt #3b4252;
+@define-color fg #d8dee9;
+@define-color muted #7b88a1;
+@define-color accent #88c0d0;
+@define-color active #50fa7b;
+@define-color urgent #bf616a;
+
+* {
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    font-family: "Noto Sans", "Font Awesome 6 Free";
+    font-size: 13px;
+}
+
+window#waybar {
+    background: alpha(@bg, 0.86);
+    color: @fg;
+    border-bottom: 2px solid alpha(@accent, 0.25);
+}
+
+#workspaces {
+    margin: 4px 5px;
+}
+
+#workspaces button {
+    min-width: 28px;
+    padding: 0 7px;
+    margin-right: 3px;
+    color: @muted;
+    border-radius: 6px;
+}
+
+#workspaces button:hover {
+    background: alpha(@bg-alt, 0.88);
+    color: @fg;
+}
+
+#workspaces button.focused {
+    background: transparent;
+    color: @active;
+}
+
+#workspaces button.urgent {
+    background: @urgent;
+    color: @fg;
+}
+
+#mode,
+#clock,
+#idle_inhibitor,
+#bluetooth,
+#tray,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#custom-power {
+    padding: 0 7px;
+    margin: 4px 1px;
+    background: transparent;
+    border-radius: 6px;
+}
+
+#clock {
+    color: @fg;
+    font-weight: 600;
+}
+
+#idle_inhibitor.activated {
+    color: @accent;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: @muted;
+}
+
+#network.disconnected,
+#pulseaudio.muted {
+    color: @muted;
+}
+
+#custom-power {
+    margin-right: 7px;
+    color: @urgent;
+    font-size: 16px;
+}
+
+tooltip {
+    background: @bg;
+    color: @fg;
+    border: 1px solid @accent;
+    border-radius: 7px;
+}

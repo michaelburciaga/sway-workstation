@@ -1,0 +1,7 @@
+# Obtain names and supported modes after logging into Sway:
+#   swaymsg -t get_outputs
+#
+# The original machine used:
+# output DP-3 mode 2560x1440@180.001Hz position 0,0 scale 1 adaptive_sync off
+#
+# Leave outputs.conf absent to let Sway choose safe defaults.

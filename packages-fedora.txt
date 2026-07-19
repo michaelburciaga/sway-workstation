@@ -1,0 +1,50 @@
+# Core Sway/SwayFX desktop
+swayfx
+sway-config-fedora
+sway-systemd
+swaybg
+swayidle
+swaylock
+waybar
+wofi
+mako
+grimshot
+slurp
+xdg-desktop-portal-wlr
+xdg-user-dirs
+lxqt-policykit
+
+# Desktop integration and controls
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+blueman
+nm-connection-editor
+
+# Fonts and terminal
+google-noto-sans-fonts
+google-noto-color-emoji-fonts
+fontawesome-6-free-fonts
+fontawesome-6-brands-fonts
+ghostty
+
+# Apps and command-line tools installed on this workstation
+brave-origin
+curl
+fastfetch
+ffmpeg
+fuse
+fuse-libs
+git
+gh
+gnome-tweaks
+golang-bin
+libva-utils
+lutris
+mesa-libGLU
+mesa-vulkan-drivers
+papirus-icon-theme
+steam
+vlc
+vulkan-loader
