@@ -6,7 +6,9 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term foot
+set $term kitty
+set $web brave-origin
+set $music flatpak run com.spotify.Client
 set $menu env QT_QPA_PLATFORMTHEME=gtk3 wofi --show drun --allow-images --insensitive
 set $wallpaper /usr/share/backgrounds/default.jxl
 
@@ -70,6 +72,8 @@ client.urgent           #bf616a #bf616a #eceff4 #bf616a #bf616a
 # Apps
 bindsym $mod+Return exec $term
 bindsym $mod+space exec $menu
+bindsym $mod+b exec $web
+bindsym $mod+d exec $music
 
 
 # session controls
@@ -187,7 +191,6 @@ bindsym $mod+Shift+p output * power toggle
 for_window [app_id="pavucontrol"] floating enable, resize set width 900px height 600px, move position center
 for_window [app_id="blueman-manager"] floating enable, move position center
 for_window [app_id="nm-connection-editor"] floating enable, move position center
-for_window [app_id="org.gnome.Calculator"] floating enable, move position center
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable
 
 # Desktop services

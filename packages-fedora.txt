@@ -28,12 +28,17 @@ google-noto-sans-fonts
 google-noto-color-emoji-fonts
 fontawesome-6-free-fonts
 fontawesome-6-brands-fonts
-foot
+kitty
+
+# Personal applications
+brave-origin
+vlc
 
 # Command-line and system tools
 curl
 fastfetch
 ffmpeg
+flatpak
 fuse
 fuse-libs
 git

@@ -23,6 +23,7 @@ log "Refreshing sudo credentials"
 sudo -v
 
 log "Enabling repositories"
+sudo install -Dm0644 "$repo_dir/repos/brave-browser.repo" /etc/yum.repos.d/brave-browser.repo
 sudo install -Dm0644 "$repo_dir/repos/swayfx.repo" /etc/yum.repos.d/_copr:swayfx:swayfx.repo
 
 # This repository supplies the multimedia packages used by the workstation.
@@ -32,6 +33,13 @@ sudo dnf install -y "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-re
 log "Installing Fedora packages"
 mapfile -t packages < <(sed -E '/^[[:space:]]*(#|$)/d' "$repo_dir/packages-fedora.txt")
 sudo dnf install -y --allowerasing "${packages[@]}"
+
+log "Installing Spotify"
+flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+while IFS= read -r app_id; do
+    [[ -z $app_id || $app_id == \#* ]] && continue
+    flatpak install --user -y flathub "$app_id"
+done < "$repo_dir/flatpaks.txt"
 
 log "Installing Sway configuration"
 install -d "$HOME/.config/sway" "$HOME/.config/waybar" \
