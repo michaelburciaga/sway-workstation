@@ -7,7 +7,9 @@
 
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "idle_inhibitor", "bluetooth", "pulseaudio", "network", "custom/power"],
+    // Per-system battery toggle: remove/add "battery" on the line below.
+    // With no system battery detected, Waybar hides the module automatically.
+    "modules-right": ["tray", "idle_inhibitor", "bluetooth", "pulseaudio", "network", "battery", "custom/power"],
 
     "sway/workspaces": {
         "disable-scroll": true,
@@ -77,6 +79,19 @@
         },
         "on-click": "pavucontrol",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+    "battery": {
+        "interval": 30,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-full": "  {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip-format": "{capacity}% • {timeTo}\n{power} W • {health}% health"
     },
     "cpu": {
         "interval": 5,

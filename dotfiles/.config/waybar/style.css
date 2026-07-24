@@ -4,6 +4,7 @@
 @define-color muted #7b88a1;
 @define-color accent #88c0d0;
 @define-color active #50fa7b;
+@define-color warning #ebcb8b;
 @define-color urgent #bf616a;
 
 * {
@@ -54,6 +55,7 @@ window#waybar {
 #tray,
 #network,
 #pulseaudio,
+#battery,
 #cpu,
 #memory,
 #custom-power {
@@ -80,6 +82,21 @@ window#waybar {
 #network.disconnected,
 #pulseaudio.muted {
     color: @muted;
+}
+
+#battery.charging,
+#battery.plugged,
+#battery.full {
+    color: @active;
+}
+
+#battery.warning {
+    color: @warning;
+}
+
+#battery.critical {
+    color: @urgent;
+    font-weight: 700;
 }
 
 #custom-power {

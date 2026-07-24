@@ -28,10 +28,9 @@ google-noto-sans-fonts
 google-noto-color-emoji-fonts
 fontawesome-6-free-fonts
 fontawesome-6-brands-fonts
-ghostty
+foot
 
-# Apps and command-line tools installed on this workstation
-brave-origin
+# Command-line and system tools
 curl
 fastfetch
 ffmpeg
@@ -39,13 +38,9 @@ fuse
 fuse-libs
 git
 gh
-gnome-tweaks
 golang-bin
 libva-utils
-lutris
 mesa-libGLU
 mesa-vulkan-drivers
 papirus-icon-theme
-steam
-vlc
 vulkan-loader

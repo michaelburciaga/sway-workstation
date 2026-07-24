@@ -6,9 +6,7 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term env QT_QPA_PLATFORMTHEME=gtk3 ghostty
-set $web brave-origin
-set $music flatpak run com.spotify.Client
+set $term foot
 set $menu env QT_QPA_PLATFORMTHEME=gtk3 wofi --show drun --allow-images --insensitive
 set $wallpaper /usr/share/backgrounds/default.jxl
 
@@ -72,8 +70,6 @@ client.urgent           #bf616a #bf616a #eceff4 #bf616a #bf616a
 # Apps
 bindsym $mod+Return exec $term
 bindsym $mod+space exec $menu
-bindsym $mod+b exec $web
-bindsym $mod+d exec $music
 
 
 # session controls
