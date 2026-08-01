@@ -44,7 +44,7 @@ done < "$repo_dir/flatpaks.txt"
 log "Installing Sway configuration"
 install -d "$HOME/.config/sway" "$HOME/.config/waybar" \
     "$HOME/.config/wofi" "$HOME/.config/mako" "$HOME/.config/autostart" \
-    "$HOME/.local/bin"
+    "$HOME/.local/bin" "$HOME/Pictures/Wallpapers"
 
 install -m0644 "$repo_dir/dotfiles/.config/sway/config" "$HOME/.config/sway/config"
 install -m0644 "$repo_dir/dotfiles/.config/waybar/config.jsonc" "$HOME/.config/waybar/config.jsonc"
@@ -53,10 +53,16 @@ install -m0644 "$repo_dir/dotfiles/.config/wofi/style.css" "$HOME/.config/wofi/s
 install -m0644 "$repo_dir/dotfiles/.config/mako/config" "$HOME/.config/mako/config"
 install -m0644 "$repo_dir/dotfiles/.config/autostart/blueman.desktop" "$HOME/.config/autostart/blueman.desktop"
 install -m0755 "$repo_dir/dotfiles/.local/bin/sway-power-menu" "$HOME/.local/bin/sway-power-menu"
+install -m0755 "$repo_dir/dotfiles/.local/bin/sway-wallpaper-picker" "$HOME/.local/bin/sway-wallpaper-picker"
 
 install -m0644 "$repo_dir/dotfiles/.config/sway/outputs.conf.example" "$HOME/.config/sway/outputs.conf.example"
 if [[ ! -e $HOME/.config/sway/outputs.conf ]]; then
     install -m0644 "$repo_dir/dotfiles/.config/sway/outputs.conf.example" "$HOME/.config/sway/outputs.conf"
+fi
+
+install -m0644 "$repo_dir/dotfiles/.config/sway/wallpaper.conf.example" "$HOME/.config/sway/wallpaper.conf.example"
+if [[ ! -e $HOME/.config/sway/wallpaper.conf ]]; then
+    install -m0644 "$repo_dir/dotfiles/.config/sway/wallpaper.conf.example" "$HOME/.config/sway/wallpaper.conf"
 fi
 
 if [[ -n ${SWAYSOCK:-} ]]; then

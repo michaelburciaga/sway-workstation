@@ -12,3 +12,7 @@ cd sway-workstation
 ```
 
 When installation finishes, log out and select **Sway** from the login screen.
+
+Put wallpaper images in `~/Pictures/Wallpapers`, then press **Super+Shift+W**
+to choose one from the thumbnail picker. The selection persists across Sway
+reloads and future logins.

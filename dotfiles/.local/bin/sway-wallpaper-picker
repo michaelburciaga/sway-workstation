@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+wallpaper_dir="$HOME/Pictures/Wallpapers"
+wallpaper_config="$HOME/.config/sway/wallpaper.conf"
+thumbnail_dir="$HOME/.cache/sway-wallpaper-thumbnails"
+
+mapfile -d '' wallpapers < <(
+    find "$wallpaper_dir" -maxdepth 1 -type f \
+        \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
+        -o -iname '*.webp' -o -iname '*.avif' -o -iname '*.jxl' \
+        -o -iname '*.bmp' -o -iname '*.gif' -o -iname '*.tif' \
+        -o -iname '*.tiff' \) \
+        -print0 | sort -z
+)
+
+if ((${#wallpapers[@]} == 0)); then
+    notify-send "Wallpaper picker" "No images found in $wallpaper_dir"
+    exit 1
+fi
+
+mkdir -p "$thumbnail_dir"
+thumbnails=()
+for wallpaper in "${wallpapers[@]}"; do
+    thumbnail_key=$(printf '%s' "$wallpaper" | sha256sum)
+    thumbnail="$thumbnail_dir/${thumbnail_key%% *}.jpg"
+
+    if [[ ! -f "$thumbnail" || "$wallpaper" -nt "$thumbnail" ]]; then
+        temporary_thumbnail=$(mktemp "$thumbnail_dir/.thumbnail.XXXXXX.jpg")
+        if magick "${wallpaper}[0]" -auto-orient \
+            -thumbnail '160x90^' -gravity center -extent 160x90 \
+            -strip -quality 75 "$temporary_thumbnail"; then
+            mv "$temporary_thumbnail" "$thumbnail"
+        else
+            rm -f "$temporary_thumbnail"
+            thumbnail="$wallpaper"
+        fi
+    fi
+
+    thumbnails+=("$thumbnail")
+done
+
+selected_name="$({
+    for index in "${!wallpapers[@]}"; do
+        printf 'img:%s:text:%s\n' "${thumbnails[index]}" "${wallpapers[index]##*/}"
+    done
+} | wofi --dmenu \
+    --prompt "Choose wallpaper" \
+    --insensitive \
+    --allow-images \
+    --parse-search \
+    --define dmenu-parse_action=true \
+    --define image_size=96 \
+    --width 900 \
+    --height 650 \
+    --cache-file /dev/null)" || exit 0
+
+[[ -n "$selected_name" ]] || exit 0
+
+selected=""
+for wallpaper in "${wallpapers[@]}"; do
+    if [[ ${wallpaper##*/} == "$selected_name" ]]; then
+        selected="$wallpaper"
+        break
+    fi
+done
+
+[[ -n "$selected" ]] || exit 1
+
+# Quote the path for Sway so filenames containing spaces remain intact.
+escaped=${selected//\\/\\\\}
+escaped=${escaped//\"/\\\"}
+swaymsg "output * bg \"$escaped\" fill" >/dev/null
+
+temporary_config=$(mktemp "$HOME/.config/sway/.wallpaper.conf.XXXXXX")
+trap 'rm -f "$temporary_config"' EXIT
+printf '%s\n' '# This file is updated automatically by sway-wallpaper-picker.' \
+    "output * bg \"$escaped\" fill" >"$temporary_config"
+mv "$temporary_config" "$wallpaper_config"
+trap - EXIT
+
+notify-send "Wallpaper changed" "$selected_name"

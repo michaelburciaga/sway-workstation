@@ -10,7 +10,9 @@ set $term kitty
 set $web brave-origin
 set $music flatpak run com.spotify.Client
 set $menu env QT_QPA_PLATFORMTHEME=gtk3 wofi --show drun --allow-images --insensitive
-set $wallpaper /usr/share/backgrounds/default.jxl
+
+# Managed by ~/.local/bin/sway-wallpaper-picker.
+include ~/.config/sway/wallpaper.conf
 
 font pango:Noto Sans 10
 
@@ -20,8 +22,6 @@ include /etc/sway/config.d/*.conf
 include ~/.config/sway/outputs.conf
 
 # Display and input
-output * bg $wallpaper fill
-
 input type:keyboard {
     xkb_layout us
     xkb_numlock enabled
@@ -81,6 +81,7 @@ bindsym $mod+q kill
 bindsym $mod+Alt+l exec loginctl lock-session
 bindsym $mod+x exec ~/.local/bin/sway-power-menu
 bindsym $mod+Shift+c reload
+bindsym $mod+Shift+w exec ~/.local/bin/sway-wallpaper-picker
 bindsym $mod+Shift+e exec swaynag -t warning -m 'End the Sway session?' -B 'Log out' 'swaymsg exit'
 
 # Focus and move windows
