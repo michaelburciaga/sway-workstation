@@ -1,5 +1,5 @@
 # Fedora Sway workstation
-
+Just my everyday configs for my Fedora workstation. 
 ## Install
 
 On Fedora, run:
