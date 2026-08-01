@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Keep startup tolerant: a missing optional desktop service should not prevent
+# the rest of the Sway session from loading.
+set -u
+
+export XDG_CURRENT_DESKTOP=${XDG_CURRENT_DESKTOP:-sway}
+
+if command -v systemctl >/dev/null; then
+    systemctl --user import-environment \
+        WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP 2>/dev/null || true
+fi
+
+if command -v dbus-update-activation-environment >/dev/null; then
+    dbus-update-activation-environment --systemd \
+        WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP 2>/dev/null || true
+fi
+
+start_once() {
+    local process_pattern=$1
+    shift
+
+    if ! pgrep -u "$(id -u)" -f "$process_pattern" >/dev/null; then
+        "$@" >/dev/null 2>&1 &
+    fi
+}
+
+for policykit_agent in \
+    /usr/libexec/lxqt-policykit-agent \
+    /usr/bin/lxqt-policykit-agent; do
+    if [[ -x $policykit_agent ]]; then
+        start_once 'lxqt-policykit-agent' "$policykit_agent"
+        break
+    fi
+done
+
+if command -v blueman-applet >/dev/null; then
+    start_once 'blueman-applet' blueman-applet
+fi
+
+if command -v xdg-user-dirs-update >/dev/null; then
+    xdg-user-dirs-update
+fi

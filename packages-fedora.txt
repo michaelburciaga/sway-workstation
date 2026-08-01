@@ -9,9 +9,10 @@ waybar
 wofi
 ImageMagick
 mako
-grimshot
+grim
 slurp
 xdg-desktop-portal-wlr
+xdg-desktop-portal-gtk
 xdg-user-dirs
 lxqt-policykit
 
@@ -23,6 +24,8 @@ desktop-backgrounds-compat
 pavucontrol
 blueman
 nm-connection-editor
+libnotify
+jq
 
 # Fonts and terminal
 google-noto-sans-fonts

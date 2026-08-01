@@ -1,0 +1,48 @@
+# Core Sway desktop (openSUSE Tumbleweed)
+sway
+swaybg
+swayidle
+swaylock
+waybar
+wofi
+ImageMagick
+mako
+grim
+slurp
+xdg-desktop-portal-wlr
+xdg-desktop-portal-gtk
+xdg-user-dirs
+lxqt-policykit
+
+# Desktop integration and controls
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+blueman
+NetworkManager-applet
+libnotify-tools
+jq
+
+# Fonts, terminal, and browser
+google-noto-sans-fonts
+google-noto-coloremoji-fonts
+fontawesome-fonts
+kitty
+MozillaFirefox
+
+# Applications and command-line tools
+vlc
+curl
+fastfetch
+ffmpeg-8
+flatpak
+fuse
+git
+gh
+go
+libva-utils
+libGLU1
+Mesa-vulkan-device-select
+papirus-icon-theme
+libvulkan1

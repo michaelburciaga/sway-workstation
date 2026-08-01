@@ -1,0 +1,48 @@
+# Core Sway desktop (Ubuntu 24.04+ and Debian 13+)
+sway
+swaybg
+swayidle
+swaylock
+waybar
+wofi
+imagemagick
+mako-notifier
+grim
+slurp
+xdg-desktop-portal-wlr
+xdg-desktop-portal-gtk
+xdg-user-dirs
+lxqt-policykit
+dbus-user-session
+
+# Desktop integration and controls
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+blueman
+network-manager-gnome
+libnotify-bin
+jq
+
+# Fonts, terminal, and browser
+fonts-noto-core
+fonts-noto-color-emoji
+fonts-font-awesome
+kitty
+firefox
+
+# Applications and command-line tools
+vlc
+curl
+ffmpeg
+flatpak
+fuse3
+git
+gh
+golang
+vainfo
+libglu1-mesa
+mesa-vulkan-drivers
+papirus-icon-theme
+libvulkan1

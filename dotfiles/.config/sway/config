@@ -7,7 +7,7 @@ set $down j
 set $up k
 set $right l
 set $term kitty
-set $web brave-origin
+set $web ~/.local/bin/sway-launch-browser
 set $music flatpak run com.spotify.Client
 set $menu env QT_QPA_PLATFORMTHEME=gtk3 wofi --show drun --allow-images --insensitive
 
@@ -16,8 +16,7 @@ include ~/.config/sway/wallpaper.conf
 
 font pango:Noto Sans 10
 
-# Fedora's systemd/session integration keeps portals and launched apps in the
-# correct Wayland environment.
+# Load distribution-provided environment integration when available.
 include /etc/sway/config.d/*.conf
 include ~/.config/sway/outputs.conf
 
@@ -46,23 +45,8 @@ default_floating_border pixel 2
 titlebar_border_thickness 0
 titlebar_padding 6 3
 
-# Subtle SwayFX translucency and blur
-blur enable
-blur_xray disable
-blur_passes 2
-blur_radius 3
-blur_noise 0.02
-blur_brightness 1.0
-blur_contrast 1.0
-blur_saturation 1.0
-for_window [app_id=".*"] opacity 0.96
-for_window [class=".*"] opacity 0.96
-
-layer_effects "waybar" {
-    blur enable
-    blur_xray enable
-    blur_ignore_transparent enable
-}
+# The installer selects stock Sway or SwayFX-specific appearance rules.
+include ~/.config/sway/compositor.conf
 
 client.focused          #88c0d0 #3b4252 #eceff4 #88c0d0 #88c0d0
 client.focused_inactive #4c566a #3b4252 #d8dee9 #4c566a #4c566a
@@ -181,9 +165,9 @@ bindsym --locked XF86AudioPrev exec playerctl previous
 bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 
-bindsym Print exec grimshot save output
-bindsym Ctrl+Print exec grimshot save area
-bindsym Alt+Print exec grimshot save active
+bindsym Print exec ~/.local/bin/sway-screenshot output
+bindsym Ctrl+Print exec ~/.local/bin/sway-screenshot area
+bindsym Alt+Print exec ~/.local/bin/sway-screenshot active
 bindsym $mod+n exec makoctl dismiss
 bindsym $mod+Shift+n exec makoctl restore
 bindsym $mod+Shift+p output * power toggle
@@ -195,7 +179,7 @@ for_window [app_id="nm-connection-editor"] floating enable, move position center
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable
 
 # Desktop services
-exec /usr/libexec/lxqt-policykit-agent
+exec ~/.local/bin/sway-session-start
 exec waybar
 exec swayidle -w \
     timeout 600 'swaylock -f' \
@@ -203,7 +187,3 @@ exec swayidle -w \
         resume 'swaymsg "output * power on"' \
     before-sleep 'swaylock -f' \
     lock 'swaylock -f'
-
-# Start desktop autostart entries (for example, Blueman) after Waybar's tray.
-exec /usr/libexec/sway-systemd/wait-sni-ready && systemctl --user start sway-xdg-autostart.target
-exec /usr/bin/xdg-user-dirs-update

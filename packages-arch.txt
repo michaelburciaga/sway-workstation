@@ -1,0 +1,49 @@
+# Core Sway desktop (Arch, EndeavourOS, Manjaro, and other Arch derivatives)
+sway
+swaybg
+swayidle
+swaylock
+waybar
+wofi
+imagemagick
+mako
+grim
+slurp
+xdg-desktop-portal-wlr
+xdg-desktop-portal-gtk
+xdg-user-dirs
+lxqt-policykit
+
+# Desktop integration and controls
+pipewire
+wireplumber
+playerctl
+brightnessctl
+pavucontrol
+blueman
+network-manager-applet
+libnotify
+jq
+
+# Fonts, terminal, and browser
+noto-fonts
+noto-fonts-emoji
+otf-font-awesome
+kitty
+firefox
+
+# Applications and command-line tools
+vlc
+curl
+fastfetch
+ffmpeg
+flatpak
+fuse2
+git
+github-cli
+go
+libva-utils
+glu
+vulkan-radeon
+papirus-icon-theme
+vulkan-icd-loader

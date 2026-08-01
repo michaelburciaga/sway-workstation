@@ -6,6 +6,16 @@ wallpaper_dir="$HOME/Pictures/Wallpapers"
 wallpaper_config="$HOME/.config/sway/wallpaper.conf"
 thumbnail_dir="$HOME/.cache/sway-wallpaper-thumbnails"
 
+if command -v magick >/dev/null; then
+    thumbnail_command=(magick)
+elif command -v convert >/dev/null; then
+    thumbnail_command=(convert)
+else
+    notify-send "Wallpaper picker" \
+        "ImageMagick is required to create wallpaper previews."
+    exit 1
+fi
+
 mapfile -d '' wallpapers < <(
     find "$wallpaper_dir" -maxdepth 1 -type f \
         \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
@@ -28,7 +38,7 @@ for wallpaper in "${wallpapers[@]}"; do
 
     if [[ ! -f "$thumbnail" || "$wallpaper" -nt "$thumbnail" ]]; then
         temporary_thumbnail=$(mktemp "$thumbnail_dir/.thumbnail.XXXXXX.jpg")
-        if magick "${wallpaper}[0]" -auto-orient \
+        if "${thumbnail_command[@]}" "${wallpaper}[0]" -auto-orient \
             -thumbnail '160x90^' -gravity center -extent 160x90 \
             -strip -quality 75 "$temporary_thumbnail"; then
             mv "$temporary_thumbnail" "$thumbnail"
