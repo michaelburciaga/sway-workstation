@@ -1,0 +1,9 @@
+/* Default palette. sway-wallpaper-picker regenerates this file. */
+@define-color bg #12151a;
+@define-color bg-alt #2a2e35;
+@define-color fg #eceff4;
+@define-color muted #aeb6c2;
+@define-color accent #88c0d0;
+@define-color active #a3d7df;
+@define-color warning #e7b450;
+@define-color urgent #ff6b6b;

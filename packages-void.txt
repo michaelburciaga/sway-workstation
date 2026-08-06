@@ -3,13 +3,13 @@ sway
 swaybg
 swayidle
 swaylock
-waybar
+Waybar
 wofi
 foot
 mako
 grim
 slurp
-imagemagick
+ImageMagick
 jq
 libnotify
 
@@ -24,6 +24,6 @@ xdg-user-dirs
 polkit-gnome
 
 # Fonts referenced by Sway, Waybar, Wofi, and Mako
-noto-fonts
+noto-fonts-ttf
 noto-fonts-emoji
-otf-font-awesome
+font-awesome6

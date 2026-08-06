@@ -90,4 +90,5 @@ printf '%s\n' '# This file is updated automatically by sway-wallpaper-picker.' \
 mv "$temporary_config" "$wallpaper_config"
 trap - EXIT
 
-notify-send "Wallpaper changed" "$selected_name"
+"$HOME/.local/bin/apply-wallpaper-theme" "$selected"
+notify-send "Wallpaper and colors changed" "$selected_name"

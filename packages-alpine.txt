@@ -21,9 +21,10 @@ brightnessctl
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
 xdg-user-dirs
+polkit-elogind
 polkit-gnome
 
 # Fonts referenced by Sway, Waybar, Wofi, and Mako
-noto-fonts
-noto-fonts-emoji
-otf-font-awesome
+font-noto
+font-noto-emoji
+font-awesome

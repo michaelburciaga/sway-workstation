@@ -1,40 +1,34 @@
 # Portable Sway workstation
 
-This repository installs a complete Sway desktop and Michael's shared
-configuration on the major Linux distribution families.
+This repository installs Michael's Sway configuration, wallpaper picker, and
+wallpaper-driven color theme without installing a bundle of personal apps.
+The installer uses a small distro-specific package manifest and otherwise
+keeps the same configuration on every supported system.
 
-## Supported distributions
+## Supported systems
 
-| Distribution family | Tested detection examples | Compositor |
-| --- | --- | --- |
-| Fedora | Fedora | SwayFX |
-| Debian | Ubuntu 24.04+, Debian 13+, Linux Mint, Pop!_OS | Stock Sway |
-| Arch | Arch Linux, EndeavourOS, Manjaro, CachyOS | Stock Sway |
-| openSUSE | openSUSE Tumbleweed | Stock Sway |
+| Package family | Distributions and derivatives |
+| --- | --- |
+| DNF | Fedora, Nobara, and Fedora-like systems |
+| APT | Ubuntu, Pop!_OS, Linux Mint, Debian, and their derivatives |
+| Pacman | Arch Linux, EndeavourOS, Manjaro, CachyOS, and derivatives |
+| Zypper | openSUSE Tumbleweed and Leap |
+| APK | Alpine Linux |
+| XBPS | Void Linux |
+| Portage | Gentoo Linux |
 
-Derivatives are detected through the `ID_LIKE` field in `/etc/os-release`.
-Package availability can vary on older releases, so a current supported release
-is recommended.
+Detection uses `ID` and `ID_LIKE` from `/etc/os-release`. When a derivative is
+unknown, the installer also recognizes the package manager. NixOS and other
+declarative or unusual systems can use `--config-only` after the dependencies
+have been installed through their native configuration.
+
+Stock Sway is the portable default. If SwayFX is already installed,
+`bootstrap.sh` detects it and keeps the blur/opacity profile. No third-party
+package repository is enabled.
 
 ## Install
 
-Start by installing Git on the new machine:
-
-```bash
-# Fedora
-sudo dnf install -y git
-
-# Ubuntu or Debian
-sudo apt update && sudo apt install -y git
-
-# Arch Linux or an Arch derivative
-sudo pacman -Syu --needed git
-
-# openSUSE Tumbleweed
-sudo zypper install -y git
-```
-
-Then clone and run the installer:
+Install Git with the system package manager, then run:
 
 ```bash
 git clone https://github.com/michaelburciaga/sway-workstation.git
@@ -42,23 +36,77 @@ cd sway-workstation
 ./bootstrap.sh
 ```
 
-The installer detects the distribution, installs the matching package manifest,
-sets up Flatpak applications, selects compatible Sway appearance rules, and
-copies the configuration. Existing monitor and wallpaper choices are preserved.
+Run the script as your normal user, not with `sudo`; it requests elevated
+access only while installing system packages. Existing managed configuration
+is copied to `~/.local/state/sway-workstation/backups/` before replacement.
+Monitor and wallpaper selections are preserved on repeated runs.
 
-To preview the commands without changing the machine, run:
+Useful modes:
 
 ```bash
-DRY_RUN=1 ./bootstrap.sh
+# Preview every action
+./bootstrap.sh --dry-run
+
+# Copy configs only (also works on an unrecognized distribution)
+./bootstrap.sh --config-only
+
+# Force stock Sway or SwayFX configuration
+SWAY_PROFILE=sway ./bootstrap.sh
+SWAY_PROFILE=swayfx ./bootstrap.sh
 ```
 
-When installation finishes, log out and select **Sway** from the login screen.
+If the system has a display manager, log out and choose **Sway**. On a minimal
+installation without one, log in on a TTY and run `sway`.
 
-## Shortcuts and local settings
+## What is installed
 
-Put wallpaper images in `~/Pictures/Wallpapers`, then press **Super+Shift+W**
-to choose one from the cached thumbnail picker. The selection persists across
-Sway reloads and future logins.
+Only software used by this desktop is in the package manifests:
 
-Monitor settings live in `~/.config/sway/outputs.conf`. The installer creates
-that file from `outputs.conf.example` only when it does not already exist.
+- Sway, SwayBG, SwayIdle, SwayLock, Waybar, Wofi, Foot, and Mako
+- Grim, Slurp, ImageMagick, `jq`, and notification support
+- PipeWire/WirePlumber, media-key and brightness helpers
+- XDG portals, user-directory support, a PolicyKit agent, and required fonts
+
+The installer deliberately does **not** install browsers, Spotify, VLC,
+Flatpak apps, FFmpeg, GitHub CLI, Go, GPU utilities, or icon themes.
+
+## Wallpaper and automatic colors
+
+Put images in `~/Pictures/Wallpapers` and press **Super+Shift+W**. The Wofi
+picker caches previews, applies the selected wallpaper, and generates a shared
+dark palette for:
+
+- Sway window borders
+- Waybar
+- Wofi
+- Mako notifications
+- Foot terminal windows opened afterward
+- GTK 3 and GTK 4 applications that honor user CSS
+
+The generator only uses ImageMagick, which the wallpaper picker already needs;
+it has no architecture-specific downloaded binary. Wallpaper paths containing
+spaces and quotes are safely written to Sway's configuration.
+
+Monitor settings are in `~/.config/sway/outputs.conf`. The installer creates it
+from `outputs.conf.example` only when it does not exist.
+
+## Key bindings
+
+| Binding | Action |
+| --- | --- |
+| `Super+Return` | Foot terminal |
+| `Super+Space` | Wofi application launcher |
+| `Super+Shift+W` | Wallpaper and theme picker |
+| `Super+X` | Portable power menu |
+| `Print` | Screenshot focused output |
+| `Ctrl+Print` | Screenshot selected area |
+| `Alt+Print` | Screenshot focused window |
+
+## Validate changes
+
+The tests never install packages:
+
+```bash
+tests/bootstrap-dry-run.sh
+tests/theme-generator.sh
+```

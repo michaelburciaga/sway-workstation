@@ -1,8 +1,4 @@
 font=Noto Sans 10
-background-color=#2e3440f2
-text-color=#eceff4ff
-border-color=#88c0d0ff
-progress-color=over #5e81acff
 border-size=2
 border-radius=8
 padding=12
@@ -16,9 +12,4 @@ max-icon-size=48
 anchor=top-right
 layer=overlay
 
-[urgency=low]
-border-color=#4c566aff
-
-[urgency=high]
-border-color=#bf616aff
-default-timeout=0
+include=~/.config/mako/colors

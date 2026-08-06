@@ -1,48 +1,30 @@
-# Core Sway desktop (openSUSE Tumbleweed)
+# Sway session and the commands used by the checked-in configuration
 sway
 swaybg
 swayidle
 swaylock
 waybar
 wofi
-ImageMagick
+foot
 mako
 grim
 slurp
+ImageMagick
+jq
+libnotify-tools
+
+# Audio, media keys, brightness, portals, and authentication prompts
+pipewire
+wireplumber
+playerctl
+brightnessctl
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
 xdg-user-dirs
 lxqt-policykit
 
-# Desktop integration and controls
-wireplumber
-playerctl
-brightnessctl
-pavucontrol
-blueman
-NetworkManager-applet
-libnotify-tools
-jq
-
-# Fonts, terminal, and browser
+# Fonts referenced by Sway, Waybar, Wofi, and Mako
 google-noto-sans-fonts
+google-noto-sans-mono-fonts
 google-noto-coloremoji-fonts
 fontawesome-fonts
-kitty
-MozillaFirefox
-
-# Applications and command-line tools
-vlc
-curl
-fastfetch
-ffmpeg-8
-flatpak
-fuse
-git
-gh
-go
-libva-utils
-libGLU1
-Mesa-vulkan-device-select
-papirus-icon-theme
-libvulkan1

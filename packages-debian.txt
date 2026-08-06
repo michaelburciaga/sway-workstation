@@ -1,48 +1,31 @@
-# Core Sway desktop (Ubuntu 24.04+ and Debian 13+)
+# Sway session and the commands used by the checked-in configuration
 sway
 swaybg
 swayidle
 swaylock
 waybar
 wofi
-imagemagick
+foot
 mako-notifier
 grim
 slurp
-xdg-desktop-portal-wlr
-xdg-desktop-portal-gtk
-xdg-user-dirs
-lxqt-policykit
-dbus-user-session
+imagemagick
+jq
+libnotify-bin
 
-# Desktop integration and controls
+# Audio, media keys, brightness, portals, and authentication prompts
+pipewire
 wireplumber
 playerctl
 brightnessctl
-pavucontrol
-blueman
-network-manager-gnome
-libnotify-bin
-jq
+xdg-desktop-portal-wlr
+xdg-desktop-portal-gtk
+xdg-user-dirs
+mate-polkit
+dbus-user-session
 
-# Fonts, terminal, and browser
+# Fonts referenced by Sway, Waybar, Wofi, and Mako
 fonts-noto-core
+fonts-noto-mono
 fonts-noto-color-emoji
 fonts-font-awesome
-kitty
-firefox
-
-# Applications and command-line tools
-vlc
-curl
-ffmpeg
-flatpak
-fuse3
-git
-gh
-golang
-vainfo
-libglu1-mesa
-mesa-vulkan-drivers
-papirus-icon-theme
-libvulkan1

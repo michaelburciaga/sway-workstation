@@ -1,55 +1,30 @@
-# Core Sway/SwayFX desktop
-swayfx
-sway-config-fedora
-sway-systemd
+# Sway session and the commands used by the checked-in configuration
+sway
 swaybg
 swayidle
 swaylock
 waybar
 wofi
-ImageMagick
+foot
 mako
 grim
 slurp
+ImageMagick
+jq
+libnotify
+
+# Audio, media keys, brightness, portals, and authentication prompts
+pipewire
+wireplumber
+playerctl
+brightnessctl
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
 xdg-user-dirs
 lxqt-policykit
 
-# Desktop integration and controls
-wireplumber
-playerctl
-brightnessctl
-desktop-backgrounds-compat
-pavucontrol
-blueman
-nm-connection-editor
-libnotify
-jq
-
-# Fonts and terminal
+# Fonts referenced by Sway, Waybar, Wofi, and Mako
 google-noto-sans-fonts
+google-noto-sans-mono-fonts
 google-noto-color-emoji-fonts
 fontawesome-6-free-fonts
-fontawesome-6-brands-fonts
-kitty
-
-# Personal applications
-brave-origin
-vlc
-
-# Command-line and system tools
-curl
-fastfetch
-ffmpeg
-flatpak
-fuse
-fuse-libs
-git
-gh
-golang-bin
-libva-utils
-mesa-libGLU
-mesa-vulkan-drivers
-papirus-icon-theme
-vulkan-loader

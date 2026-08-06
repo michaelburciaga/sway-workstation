@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
@@ -13,7 +12,6 @@ run_case() {
     local version=$4
     local expected_family=$5
     local expected_command=$6
-    local expected_profile=$7
     local os_release="$test_dir/${name}.os-release"
     local home_dir="$test_dir/${name}-home"
     local output
@@ -31,26 +29,43 @@ run_case() {
 
     [[ $output == *"(${expected_family} family)"* ]]
     [[ $output == *"$expected_command"* ]]
-    [[ $output == *"compositors/${expected_profile}.conf"* ]]
+    [[ $output == *"compositors/sway.conf"* ]]
+    [[ $output != *"flatpak install"* ]]
     printf 'ok - %s\n' "$name"
 }
 
-run_case Fedora fedora "" 44 fedora "dnf install" swayfx
-run_case Ubuntu ubuntu debian 24.04 debian "apt-get install" sway
-run_case Debian debian "" 13 debian "apt-get install" sway
-run_case EndeavourOS endeavouros arch rolling arch "pacman -Syu" sway
+run_case Fedora fedora "" 44 fedora "dnf install"
+run_case Ubuntu ubuntu debian 24.04 debian "apt-get install"
+run_case PopOS pop "ubuntu debian" 24.04 debian "apt-get install"
+run_case Mint linuxmint "ubuntu debian" 22 debian "apt-get install"
+run_case Debian debian "" 13 debian "apt-get install"
+run_case Arch arch "" rolling arch "pacman -Syu"
+run_case EndeavourOS endeavouros arch rolling arch "pacman -Syu"
+run_case Manjaro manjaro arch rolling arch "pacman -Syu"
 run_case openSUSE opensuse-tumbleweed "opensuse suse" rolling opensuse \
-    "zypper --non-interactive install" sway
+    "zypper --non-interactive install"
+run_case Alpine alpine "" 3.23 alpine "apk add"
+run_case Void void "" rolling void "xbps-install -y"
+run_case Gentoo gentoo "" rolling gentoo "emerge --ask=n"
 
-unsupported_release="$test_dir/unsupported.os-release"
-printf '%s\n' 'ID=gentoo' 'PRETTY_NAME="Gentoo test"' \
-    >"$unsupported_release"
-
-if HOME="$test_dir/unsupported-home" \
-    OS_RELEASE_FILE="$unsupported_release" \
+unknown_release="$test_dir/unknown.os-release"
+unknown_home="$test_dir/unknown-home"
+mkdir -p "$unknown_home"
+printf '%s\n' 'ID=nixos' 'PRETTY_NAME="NixOS test"' >"$unknown_release"
+output=$(
+    HOME="$unknown_home" \
+    OS_RELEASE_FILE="$unknown_release" \
     DRY_RUN=1 \
-    "$repo_dir/bootstrap.sh" >/dev/null 2>&1; then
-    printf 'not ok - unsupported distribution was accepted\n' >&2
-    exit 1
-fi
-printf 'ok - unsupported distribution is rejected clearly\n'
+    "$repo_dir/bootstrap.sh" --config-only
+)
+[[ $output == *"Skipping package installation"* ]]
+[[ $output == *"dotfiles/.config/sway/config"* ]]
+printf 'ok - unknown distributions support configuration-only mode\n'
+
+for unwanted in flatpak brave spotify vlc ffmpeg github-cli golang fastfetch; do
+    if grep -Eiq "^[[:space:]]*${unwanted}([[:space:]]|$)" "$repo_dir"/packages-*.txt; then
+        printf 'not ok - unwanted package remains: %s\n' "$unwanted" >&2
+        exit 1
+    fi
+done
+printf 'ok - package manifests contain no personal applications\n'

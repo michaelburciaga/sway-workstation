@@ -1,2 +1,0 @@
-# Personal applications installed from Flathub
-com.spotify.Client

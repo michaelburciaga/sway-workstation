@@ -6,13 +6,12 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term kitty
-set $web ~/.local/bin/sway-launch-browser
-set $music flatpak run com.spotify.Client
-set $menu env QT_QPA_PLATFORMTHEME=gtk3 wofi --show drun --allow-images --insensitive
+set $term foot
+set $menu wofi --show drun --allow-images --insensitive
 
 # Managed by ~/.local/bin/sway-wallpaper-picker.
 include ~/.config/sway/wallpaper.conf
+include ~/.config/sway/colors.conf
 
 font pango:Noto Sans 10
 
@@ -48,21 +47,13 @@ titlebar_padding 6 3
 # The installer selects stock Sway or SwayFX-specific appearance rules.
 include ~/.config/sway/compositor.conf
 
-client.focused          #88c0d0 #3b4252 #eceff4 #88c0d0 #88c0d0
-client.focused_inactive #4c566a #3b4252 #d8dee9 #4c566a #4c566a
-client.unfocused        #3b4252 #2e3440 #a3abb8 #3b4252 #3b4252
-client.urgent           #bf616a #bf616a #eceff4 #bf616a #bf616a
-
 # Apps
 bindsym $mod+Return exec $term
 bindsym $mod+space exec $menu
-bindsym $mod+b exec $web
-bindsym $mod+d exec $music
-
 
 # session controls
 bindsym $mod+q kill
-bindsym $mod+Alt+l exec loginctl lock-session
+bindsym $mod+Alt+l exec swaylock -f
 bindsym $mod+x exec ~/.local/bin/sway-power-menu
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+w exec ~/.local/bin/sway-wallpaper-picker
@@ -171,12 +162,6 @@ bindsym Alt+Print exec ~/.local/bin/sway-screenshot active
 bindsym $mod+n exec makoctl dismiss
 bindsym $mod+Shift+n exec makoctl restore
 bindsym $mod+Shift+p output * power toggle
-
-# Common floating utility windows
-for_window [app_id="pavucontrol"] floating enable, resize set width 900px height 600px, move position center
-for_window [app_id="blueman-manager"] floating enable, move position center
-for_window [app_id="nm-connection-editor"] floating enable, move position center
-for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable
 
 # Desktop services
 exec ~/.local/bin/sway-session-start

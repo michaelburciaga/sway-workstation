@@ -5,15 +5,18 @@
 set -u
 
 export XDG_CURRENT_DESKTOP=${XDG_CURRENT_DESKTOP:-sway}
+export XDG_SESSION_DESKTOP=${XDG_SESSION_DESKTOP:-sway}
 
 if command -v systemctl >/dev/null; then
     systemctl --user import-environment \
-        WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP 2>/dev/null || true
+        WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP \
+        2>/dev/null || true
 fi
 
 if command -v dbus-update-activation-environment >/dev/null; then
     dbus-update-activation-environment --systemd \
-        WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP 2>/dev/null || true
+        WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP \
+        2>/dev/null || true
 fi
 
 start_once() {
@@ -27,16 +30,16 @@ start_once() {
 
 for policykit_agent in \
     /usr/libexec/lxqt-policykit-agent \
-    /usr/bin/lxqt-policykit-agent; do
+    /usr/bin/lxqt-policykit-agent \
+    /usr/libexec/polkit-mate-authentication-agent-1 \
+    /usr/libexec/polkit-gnome-authentication-agent-1 \
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 \
+    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1; do
     if [[ -x $policykit_agent ]]; then
-        start_once 'lxqt-policykit-agent' "$policykit_agent"
+        start_once "${policykit_agent##*/}" "$policykit_agent"
         break
     fi
 done
-
-if command -v blueman-applet >/dev/null; then
-    start_once 'blueman-applet' blueman-applet
-fi
 
 if command -v xdg-user-dirs-update >/dev/null; then
     xdg-user-dirs-update

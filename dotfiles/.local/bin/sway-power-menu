@@ -1,12 +1,32 @@
 #!/usr/bin/env bash
 
 choice=$(printf '%s\n' 'Lock' 'Suspend' 'Log out' 'Reboot' 'Power off' | \
-    wofi --dmenu --prompt 'Power' --width 320 --height 300)
+    wofi --dmenu --prompt 'Power' --width 320 --height 300) || exit 0
+
+notify_failure() {
+    notify-send "Power action unavailable" \
+        "No supported session service could perform: $1"
+}
+
+session_action() {
+    local action=$1 fallback=${2:-}
+
+    if command -v loginctl >/dev/null && loginctl "$action"; then
+        return
+    fi
+    if command -v systemctl >/dev/null && systemctl "$action"; then
+        return
+    fi
+    if [[ -n $fallback ]] && command -v "$fallback" >/dev/null && "$fallback"; then
+        return
+    fi
+    notify_failure "$action"
+}
 
 case "$choice" in
-    Lock) loginctl lock-session ;;
-    Suspend) systemctl suspend ;;
+    Lock) swaylock -f ;;
+    Suspend) session_action suspend zzz ;;
     'Log out') swaymsg exit ;;
-    Reboot) systemctl reboot ;;
-    'Power off') systemctl poweroff ;;
+    Reboot) session_action reboot reboot ;;
+    'Power off') session_action poweroff poweroff ;;
 esac
