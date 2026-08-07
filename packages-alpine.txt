@@ -1,11 +1,10 @@
-# Sway session and the commands used by the checked-in configuration
+# Sway session and commands used by the configuration
 sway
 swaybg
 swayidle
 swaylock
 waybar
 wofi
-foot
 mako
 grim
 slurp
@@ -24,7 +23,7 @@ xdg-user-dirs
 polkit-elogind
 polkit-gnome
 
-# Fonts referenced by Sway, Waybar, Wofi, and Mako
+# Fonts
 font-noto
 font-noto-emoji
 font-awesome
