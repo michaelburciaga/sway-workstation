@@ -1,46 +1,46 @@
-@import "colors.css";
-
 window {
     margin: 0;
-    border: 2px solid @launcher_accent;
+    border: 2px solid #88c0d0;
     border-radius: 10px;
-    background-color: @launcher_bg;
+    background-color: #12151a;
+    color: #eceff4;
     font-family: "Noto Sans";
     font-size: 15px;
 }
 
-#outer-box,
-#scroll,
-#inner-box {
-    background-color: @launcher_bg;
+#outer-box {
+    padding: 10px;
+    background-color: #12151a;
 }
 
 #input {
-    margin: 10px;
+    margin-bottom: 10px;
     padding: 10px;
     border: none;
     border-radius: 7px;
-    color: @launcher_fg;
-    background-color: @launcher_field;
+    color: #eceff4;
+    background-color: #2a2e35;
 }
 
+#scroll,
 #inner-box {
-    margin: 0 10px 10px;
+    background-color: #12151a;
 }
 
 #entry {
     padding: 8px;
     border-radius: 7px;
+    background-color: #12151a;
 }
 
 #entry:selected {
-    background-color: @launcher_selection;
+    background-color: #486b78;
 }
 
 #text {
-    color: @launcher_fg;
+    color: #eceff4;
 }
 
 #text:selected {
-    color: @launcher_selection_fg;
+    color: #ffffff;
 }
