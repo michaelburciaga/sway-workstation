@@ -1,11 +1,10 @@
-# Sway session and the commands used by the checked-in configuration
+# Sway session and commands used by the configuration
 gui-wm/sway
 gui-apps/swaybg
 gui-apps/swayidle
 gui-apps/swaylock
 gui-apps/waybar
 gui-apps/wofi
-gui-apps/foot
 gui-apps/mako
 gui-apps/grim
 gui-apps/slurp
@@ -23,7 +22,7 @@ sys-apps/xdg-desktop-portal-gtk
 x11-misc/xdg-user-dirs
 gnome-extra/polkit-gnome
 
-# Fonts referenced by Sway, Waybar, Wofi, and Mako
+# Fonts
 media-fonts/noto
 media-fonts/noto-emoji
 media-fonts/fontawesome
