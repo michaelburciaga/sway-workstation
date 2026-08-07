@@ -11,7 +11,7 @@ grim
 slurp
 ImageMagick
 jq
-libnotify
+libnotify-tools
 
 # Audio, media keys, brightness, portals, and authentication prompts
 pipewire
@@ -26,5 +26,5 @@ lxqt-policykit
 # Fonts referenced by Sway, Waybar, Wofi, and Mako
 google-noto-sans-fonts
 google-noto-sans-mono-fonts
-google-noto-color-emoji-fonts
-fontawesome-6-free-fonts
+google-noto-coloremoji-fonts
+fontawesome-fonts

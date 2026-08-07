@@ -1,18 +1,27 @@
+@import "colors.css";
+
 window {
     margin: 0;
-    border: 2px solid #88c0d0;
+    border: 2px solid @launcher_accent;
     border-radius: 10px;
-    background-color: #2e3440;
+    background-color: @launcher_bg;
     font-family: "Noto Sans";
     font-size: 15px;
 }
+
+#outer-box,
+#scroll,
+#inner-box {
+    background-color: @launcher_bg;
+}
+
 #input {
     margin: 10px;
     padding: 10px;
     border: none;
     border-radius: 7px;
-    color: #eceff4;
-    background-color: #3b4252;
+    color: @launcher_fg;
+    background-color: @launcher_field;
 }
 
 #inner-box {
@@ -25,13 +34,13 @@ window {
 }
 
 #entry:selected {
-    background-color: #5e81ac;
+    background-color: @launcher_selection;
 }
 
 #text {
-    color: #d8dee9;
+    color: @launcher_fg;
 }
 
 #text:selected {
-    color: #eceff4;
+    color: @launcher_selection_fg;
 }

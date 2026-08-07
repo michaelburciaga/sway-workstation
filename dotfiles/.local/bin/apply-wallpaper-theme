@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+wallpaper=${1:-}
+
+if [[ -z $wallpaper || ! -f $wallpaper ]]; then
+    printf 'usage: %s /path/to/wallpaper\n' "${0##*/}" >&2
+    exit 2
+fi
+
+if command -v magick >/dev/null 2>&1; then
+    image_command=(magick)
+elif command -v convert >/dev/null 2>&1; then
+    image_command=(convert)
+else
+    printf 'ImageMagick is required to generate wallpaper colors.\n' >&2
+    exit 1
+fi
+
+hex_rgb() {
+    local hex=${1#\#}
+    printf '%d %d %d\n' "$((16#${hex:0:2}))" "$((16#${hex:2:2}))" "$((16#${hex:4:2}))"
+}
+
+rgb_hex() {
+    printf '#%02x%02x%02x' "$1" "$2" "$3"
+}
+
+# Blend the first color over the second by the supplied percentage.
+blend() {
+    local first=${1#\#} second=${2#\#} amount=$3
+    local r1 g1 b1 r2 g2 b2
+    read -r r1 g1 b1 < <(hex_rgb "$first")
+    read -r r2 g2 b2 < <(hex_rgb "$second")
+    rgb_hex \
+        "$(((r1 * amount + r2 * (100 - amount)) / 100))" \
+        "$(((g1 * amount + g2 * (100 - amount)) / 100))" \
+        "$(((b1 * amount + b2 * (100 - amount)) / 100))"
+}
+
+extract_accent() {
+    local candidate first_candidate="" fallback=88c0d0 r g b maximum minimum luminance
+
+    while IFS= read -r candidate; do
+        candidate=${candidate^^}
+        [[ $candidate =~ ^[0-9A-F]{6}$ ]] || continue
+        [[ -n ${first_candidate:-} ]] || first_candidate=$candidate
+        read -r r g b < <(hex_rgb "$candidate")
+        maximum=$r
+        ((g > maximum)) && maximum=$g
+        ((b > maximum)) && maximum=$b
+        minimum=$r
+        ((g < minimum)) && minimum=$g
+        ((b < minimum)) && minimum=$b
+        luminance=$(((r * 299 + g * 587 + b * 114) / 1000))
+
+        # Avoid nearly black, white, or gray colors that make weak accents.
+        if ((luminance >= 55 && luminance <= 215 && maximum - minimum >= 28)); then
+            printf '#%s\n' "$candidate"
+            return
+        fi
+    done < <(
+        "${image_command[@]}" "${wallpaper}[0]" -auto-orient \
+            -thumbnail '96x96^' -gravity center -extent 96x96 \
+            -colorspace sRGB -modulate 100,145,100 -colors 12 -depth 8 \
+            -format '%c' histogram:info:- 2>/dev/null | sort -nr | \
+            sed -nE 's/.*#([[:xdigit:]]{6})([[:xdigit:]]{2})?.*/\1/p'
+    )
+
+    printf '#%s\n' "${first_candidate:-$fallback}"
+}
+
+atomic_write() {
+    local destination=$1 temporary
+    mkdir -p "${destination%/*}"
+    temporary=$(mktemp "${destination%/*}/.${destination##*/}.XXXXXX")
+    cat >"$temporary"
+    mv "$temporary" "$destination"
+}
+
+accent=$(extract_accent)
+bg=$(blend "$accent" '#101318' 9)
+bg_alt=$(blend "$accent" '#262a31' 20)
+surface=$(blend "$accent" '#191d23' 12)
+fg=$(blend "$accent" '#f4f5f7' 7)
+muted=$(blend "$accent" '#c2c8d0' 18)
+outline=$(blend "$accent" '#606975' 22)
+accent_soft=$(blend "$accent" '#ffffff' 76)
+selection=$(blend "$accent" "$bg" 64)
+selection_fg='#ffffff'
+warning='#e7b450'
+urgent='#ff6b6b'
+urgent_bg='#6e2525'
+
+atomic_write "$HOME/.config/sway/colors.conf" <<EOF
+# Generated from the active wallpaper by apply-wallpaper-theme.
+#                         border        background    text           indicator     child_border
+client.focused          $accent       $bg_alt       $fg            $accent       $accent
+client.focused_inactive $outline      $surface      $muted         $outline      $outline
+client.unfocused        $bg_alt       $bg           $muted         $bg_alt       $bg_alt
+client.urgent           $urgent       $urgent_bg    $selection_fg  $urgent       $urgent
+EOF
+
+atomic_write "$HOME/.config/waybar/colors.css" <<EOF
+/* Generated from the active wallpaper by apply-wallpaper-theme. */
+@define-color bg $bg;
+@define-color bg-alt $bg_alt;
+@define-color fg $fg;
+@define-color muted $muted;
+@define-color accent $accent;
+@define-color active $accent_soft;
+@define-color warning $warning;
+@define-color urgent $urgent;
+EOF
+
+atomic_write "$HOME/.config/wofi/colors.css" <<EOF
+/* Generated from the active wallpaper by apply-wallpaper-theme. */
+@define-color launcher_bg $bg;
+@define-color launcher_field $bg_alt;
+@define-color launcher_fg $fg;
+@define-color launcher_accent $accent;
+@define-color launcher_selection $selection;
+@define-color launcher_selection_fg $selection_fg;
+EOF
+
+atomic_write "$HOME/.config/mako/colors" <<EOF
+# Generated from the active wallpaper by apply-wallpaper-theme.
+background-color=${bg}f2
+text-color=${fg}ff
+border-color=${accent}ff
+progress-color=over ${selection}ff
+
+[urgency=low]
+border-color=${outline}ff
+
+[urgency=high]
+border-color=${urgent}ff
+default-timeout=0
+EOF
+
+strip_hash() { printf '%s' "${1#\#}"; }
+atomic_write "$HOME/.config/foot/colors.ini" <<EOF
+# Generated from the active wallpaper by apply-wallpaper-theme.
+[colors-dark]
+foreground=$(strip_hash "$fg")
+background=$(strip_hash "$bg")
+selection-foreground=$(strip_hash "$selection_fg")
+selection-background=$(strip_hash "$selection")
+regular0=$(strip_hash "$bg")
+regular1=$(strip_hash "$urgent")
+regular2=$(strip_hash "$accent")
+regular3=$(strip_hash "$warning")
+regular4=6ea8d9
+regular5=bb86c8
+regular6=72c7c7
+regular7=$(strip_hash "$muted")
+bright0=$(strip_hash "$outline")
+bright1=ff8b85
+bright2=$(strip_hash "$accent_soft")
+bright3=f1c96e
+bright4=91bee5
+bright5=d2a6db
+bright6=9adddd
+bright7=ffffff
+EOF
+
+gtk_colors=$(cat <<EOF
+/* Generated from the active wallpaper by apply-wallpaper-theme. */
+@define-color accent_color $accent;
+@define-color accent_fg_color $bg;
+@define-color accent_bg_color $accent;
+@define-color window_bg_color $bg;
+@define-color window_fg_color $fg;
+@define-color headerbar_bg_color $surface;
+@define-color headerbar_fg_color $fg;
+@define-color popover_bg_color $bg_alt;
+@define-color popover_fg_color $fg;
+@define-color view_bg_color $bg;
+@define-color view_fg_color $fg;
+EOF
+)
+printf '%s\n' "$gtk_colors" | atomic_write "$HOME/.config/gtk-3.0/colors.css"
+printf '%s\n' "$gtk_colors" | atomic_write "$HOME/.config/gtk-4.0/colors.css"
+
+if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark >/dev/null 2>&1 || true
+fi
+
+# Existing Foot windows keep their current colors; new windows load the palette.
+if [[ ${THEME_NO_RELOAD:-0} != 1 ]]; then
+    swaymsg reload >/dev/null 2>&1 || true
+    makoctl reload >/dev/null 2>&1 || true
+    pkill -SIGUSR2 waybar >/dev/null 2>&1 || true
+fi

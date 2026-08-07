@@ -1,11 +1,4 @@
-@define-color bg #171b24;
-@define-color bg-alt #3b4252;
-@define-color fg #d8dee9;
-@define-color muted #7b88a1;
-@define-color accent #88c0d0;
-@define-color active #50fa7b;
-@define-color warning #ebcb8b;
-@define-color urgent #bf616a;
+@import "colors.css";
 
 * {
     border: none;
@@ -68,6 +61,10 @@ window#waybar {
 #clock {
     color: @fg;
     font-weight: 600;
+}
+
+#tray > widget {
+    padding: 0 5px;
 }
 
 #idle_inhibitor.activated {

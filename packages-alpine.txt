@@ -9,7 +9,7 @@ foot
 mako
 grim
 slurp
-ImageMagick
+imagemagick
 jq
 libnotify
 
@@ -21,10 +21,10 @@ brightnessctl
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
 xdg-user-dirs
-lxqt-policykit
+polkit-elogind
+polkit-gnome
 
 # Fonts referenced by Sway, Waybar, Wofi, and Mako
-google-noto-sans-fonts
-google-noto-sans-mono-fonts
-google-noto-color-emoji-fonts
-fontawesome-6-free-fonts
+font-noto
+font-noto-emoji
+font-awesome

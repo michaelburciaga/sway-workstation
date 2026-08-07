@@ -1,0 +1,12 @@
+# Default palette. sway-wallpaper-picker regenerates this file.
+background-color=#12151af2
+text-color=#eceff4ff
+border-color=#88c0d0ff
+progress-color=over #486b78ff
+
+[urgency=low]
+border-color=#65737eff
+
+[urgency=high]
+border-color=#ff6b6bff
+default-timeout=0

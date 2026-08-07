@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+mode=${1:-output}
+pictures_dir=$(xdg-user-dir PICTURES 2>/dev/null || true)
+pictures_dir=${pictures_dir:-$HOME/Pictures}
+screenshot_dir="$pictures_dir/Screenshots"
+filename="$screenshot_dir/$(date +'%Y-%m-%d_%H-%M-%S').png"
+mkdir -p "$screenshot_dir"
+
+case "$mode" in
+    output)
+        focused_output=$(swaymsg -t get_outputs -r | \
+            jq -r '.[] | select(.focused) | .name' | head -n 1)
+        [[ -n $focused_output ]] || exit 1
+        grim -o "$focused_output" "$filename"
+        ;;
+    area)
+        geometry=$(slurp) || exit 0
+        [[ -n $geometry ]] || exit 0
+        grim -g "$geometry" "$filename"
+        ;;
+    active)
+        geometry=$(swaymsg -t get_tree -r | jq -r '
+            .. | objects | select(.focused? == true) | .rect |
+            "\(.x),\(.y) \(.width)x\(.height)"' | head -n 1)
+        [[ -n $geometry ]] || exit 1
+        grim -g "$geometry" "$filename"
+        ;;
+    *)
+        printf 'usage: %s {output|area|active}\n' "${0##*/}" >&2
+        exit 2
+        ;;
+esac
+
+notify-send "Screenshot saved" "$filename"

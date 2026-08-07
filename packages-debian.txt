@@ -6,12 +6,12 @@ swaylock
 waybar
 wofi
 foot
-mako
+mako-notifier
 grim
 slurp
-ImageMagick
+imagemagick
 jq
-libnotify
+libnotify-bin
 
 # Audio, media keys, brightness, portals, and authentication prompts
 pipewire
@@ -21,10 +21,11 @@ brightnessctl
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
 xdg-user-dirs
-lxqt-policykit
+mate-polkit
+dbus-user-session
 
 # Fonts referenced by Sway, Waybar, Wofi, and Mako
-google-noto-sans-fonts
-google-noto-sans-mono-fonts
-google-noto-color-emoji-fonts
-fontawesome-6-free-fonts
+fonts-noto-core
+fonts-noto-mono
+fonts-noto-color-emoji
+fonts-font-awesome
