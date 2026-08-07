@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -n ${TERMINAL:-} ]]; then
+    exec "$TERMINAL" "$@"
+fi
+
+for terminal in xdg-terminal-exec x-terminal-emulator gnome-terminal kgx konsole alacritty kitty wezterm foot; do
+    if command -v "$terminal" >/dev/null 2>&1; then
+        exec "$terminal" "$@"
+    fi
+done
+
+printf 'No terminal emulator found. Set the TERMINAL environment variable.\n' >&2
+exit 1
