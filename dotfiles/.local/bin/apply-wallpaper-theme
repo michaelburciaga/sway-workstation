@@ -26,7 +26,6 @@ rgb_hex() {
     printf '#%02x%02x%02x' "$1" "$2" "$3"
 }
 
-# Blend the first color over the second by the supplied percentage.
 blend() {
     local first=${1#\#} second=${2#\#} amount=$3
     local r1 g1 b1 r2 g2 b2
@@ -54,7 +53,6 @@ extract_accent() {
         ((b < minimum)) && minimum=$b
         luminance=$(((r * 299 + g * 587 + b * 114) / 1000))
 
-        # Avoid nearly black, white, or gray colors that make weak accents.
         if ((luminance >= 55 && luminance <= 215 && maximum - minimum >= 28)); then
             printf '#%s\n' "$candidate"
             return
@@ -93,8 +91,7 @@ urgent='#ff6b6b'
 urgent_bg='#6e2525'
 
 atomic_write "$HOME/.config/sway/colors.conf" <<EOF
-# Generated from the active wallpaper by apply-wallpaper-theme.
-#                         border        background    text           indicator     child_border
+# Generated from the active wallpaper.
 client.focused          $accent       $bg_alt       $fg            $accent       $accent
 client.focused_inactive $outline      $surface      $muted         $outline      $outline
 client.unfocused        $bg_alt       $bg           $muted         $bg_alt       $bg_alt
@@ -102,7 +99,6 @@ client.urgent           $urgent       $urgent_bg    $selection_fg  $urgent      
 EOF
 
 atomic_write "$HOME/.config/waybar/colors.css" <<EOF
-/* Generated from the active wallpaper by apply-wallpaper-theme. */
 @define-color bg $bg;
 @define-color bg-alt $bg_alt;
 @define-color fg $fg;
@@ -114,7 +110,6 @@ atomic_write "$HOME/.config/waybar/colors.css" <<EOF
 EOF
 
 atomic_write "$HOME/.config/wofi/colors.css" <<EOF
-/* Generated from the active wallpaper by apply-wallpaper-theme. */
 @define-color launcher_bg $bg;
 @define-color launcher_field $bg_alt;
 @define-color launcher_fg $fg;
@@ -124,7 +119,6 @@ atomic_write "$HOME/.config/wofi/colors.css" <<EOF
 EOF
 
 atomic_write "$HOME/.config/mako/colors" <<EOF
-# Generated from the active wallpaper by apply-wallpaper-theme.
 background-color=${bg}f2
 text-color=${fg}ff
 border-color=${accent}ff
@@ -138,34 +132,7 @@ border-color=${urgent}ff
 default-timeout=0
 EOF
 
-strip_hash() { printf '%s' "${1#\#}"; }
-atomic_write "$HOME/.config/foot/colors.ini" <<EOF
-# Generated from the active wallpaper by apply-wallpaper-theme.
-[colors-dark]
-foreground=$(strip_hash "$fg")
-background=$(strip_hash "$bg")
-selection-foreground=$(strip_hash "$selection_fg")
-selection-background=$(strip_hash "$selection")
-regular0=$(strip_hash "$bg")
-regular1=$(strip_hash "$urgent")
-regular2=$(strip_hash "$accent")
-regular3=$(strip_hash "$warning")
-regular4=6ea8d9
-regular5=bb86c8
-regular6=72c7c7
-regular7=$(strip_hash "$muted")
-bright0=$(strip_hash "$outline")
-bright1=ff8b85
-bright2=$(strip_hash "$accent_soft")
-bright3=f1c96e
-bright4=91bee5
-bright5=d2a6db
-bright6=9adddd
-bright7=ffffff
-EOF
-
 gtk_colors=$(cat <<EOF
-/* Generated from the active wallpaper by apply-wallpaper-theme. */
 @define-color accent_color $accent;
 @define-color accent_fg_color $bg;
 @define-color accent_bg_color $accent;
@@ -186,7 +153,6 @@ if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface color-scheme prefer-dark >/dev/null 2>&1 || true
 fi
 
-# Existing Foot windows keep their current colors; new windows load the palette.
 if [[ ${THEME_NO_RELOAD:-0} != 1 ]]; then
     swaymsg reload >/dev/null 2>&1 || true
     makoctl reload >/dev/null 2>&1 || true
