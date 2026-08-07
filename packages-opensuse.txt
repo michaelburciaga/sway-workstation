@@ -1,11 +1,10 @@
-# Sway session and the commands used by the checked-in configuration
+# Sway session and commands used by the configuration
 sway
 swaybg
 swayidle
 swaylock
-waybar
+Waybar
 wofi
-foot
 mako
 grim
 slurp
@@ -23,7 +22,7 @@ xdg-desktop-portal-gtk
 xdg-user-dirs
 lxqt-policykit
 
-# Fonts referenced by Sway, Waybar, Wofi, and Mako
+# Fonts
 google-noto-sans-fonts
 google-noto-sans-mono-fonts
 google-noto-coloremoji-fonts
