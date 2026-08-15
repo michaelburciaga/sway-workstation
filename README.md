@@ -1,6 +1,6 @@
 # Sway workstation
 
-A portable Sway setup for Fedora, Ubuntu/Pop!_OS/Debian, Arch, openSUSE, Alpine, Void, and Gentoo.
+A portable Sway setup for Fedora, Ubuntu/Pop!_OS/Debian, Arch, openSUSE, Alpine, Void, and Gentoo. It includes adaptive Hyprland-style tiling and wallpaper-driven desktop colors.
 
 ## Install
 

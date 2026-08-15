@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Approximate Hyprland's dwindle layout by choosing the next split from the
+# focused tile's shape: wide tiles split side by side, tall tiles top to bottom.
+set -u
+
+lock_dir="${XDG_RUNTIME_DIR:-/tmp}"
+exec 9>"${lock_dir}/sway-autotiling-${UID}.lock"
+flock -n 9 || exit 0
+
+set_next_split() {
+    local dimensions width height
+
+    dimensions="$({
+        swaymsg --raw --type get_tree 2>/dev/null || true
+    } | jq --raw-output '
+        .. | objects
+        | select(.focused? == true)
+        | select((.floating? // "auto_off") | endswith("_off"))
+        | .rect
+        | "\(.width) \(.height)"
+    ' | head -n 1)"
+
+    read -r width height <<< "$dimensions"
+    [[ "$width" =~ ^[0-9]+$ && "$height" =~ ^[0-9]+$ ]] || return 0
+
+    if ((width > height)); then
+        swaymsg --quiet split horizontal
+    else
+        swaymsg --quiet split vertical
+    fi
+}
+
+set_next_split
+
+swaymsg --monitor --type subscribe '["window", "workspace"]' 2>/dev/null |
+    jq --compact-output --unbuffered '
+        select(.change == "new"
+            or .change == "focus"
+            or .change == "move"
+            or .change == "floating")
+    ' |
+    while IFS= read -r _event; do
+        set_next_split
+    done

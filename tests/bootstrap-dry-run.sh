@@ -60,6 +60,7 @@ output=$(
 )
 [[ $output == *"Skipping package installation"* ]]
 [[ $output == *"dotfiles/.config/sway/config"* ]]
+[[ $output == *"sway-autotiling"* ]]
 printf 'ok - unknown distributions support configuration-only mode\n'
 
 for unwanted in flatpak brave spotify vlc ffmpeg github-cli golang fastfetch; do

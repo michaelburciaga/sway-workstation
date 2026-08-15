@@ -164,6 +164,7 @@ bindsym $mod+Shift+n exec makoctl restore
 bindsym $mod+Shift+p output * power toggle
 
 # Desktop services
+exec_always ~/.local/bin/sway-autotiling
 exec ~/.local/bin/sway-session-start
 exec waybar
 exec swayidle -w \
