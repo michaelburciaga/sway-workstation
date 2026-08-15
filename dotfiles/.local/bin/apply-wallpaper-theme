@@ -78,6 +78,22 @@ atomic_write() {
     mv "$temporary" "$destination"
 }
 
+generate_lock_background() {
+    local cache_dir temporary
+    cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/sway-lock"
+    mkdir -p "$cache_dir"
+    temporary=$(mktemp "$cache_dir/.background.XXXXXX.png")
+
+    if "${image_command[@]}" "${wallpaper}[0]" -auto-orient \
+        -resize '2560x2560>' -filter Gaussian -blur 0x12 \
+        -fill '#000000' -colorize 38 "$temporary"; then
+        mv "$temporary" "$cache_dir/background.png"
+    else
+        rm -f "$temporary"
+        return 1
+    fi
+}
+
 accent=$(extract_accent)
 bg=$(blend "$accent" '#101318' 9)
 bg_alt=$(blend "$accent" '#262a31' 20)
@@ -91,6 +107,8 @@ selection_fg='#ffffff'
 warning='#e7b450'
 urgent='#ff6b6b'
 urgent_bg='#6e2525'
+
+generate_lock_background
 
 atomic_write "$HOME/.config/sway/colors.conf" <<EOF
 # Generated from the active wallpaper by apply-wallpaper-theme.
@@ -121,6 +139,17 @@ atomic_write "$HOME/.config/wofi/colors.css" <<EOF
 @define-color launcher_accent $accent;
 @define-color launcher_selection $selection;
 @define-color launcher_selection_fg $selection_fg;
+EOF
+
+atomic_write "$HOME/.config/gtklock/colors.css" <<EOF
+/* Generated from the active wallpaper by apply-wallpaper-theme. */
+@define-color lock_surface $surface;
+@define-color lock_surface_alt $bg_alt;
+@define-color lock_fg $fg;
+@define-color lock_muted $muted;
+@define-color lock_accent $accent;
+@define-color lock_outline $outline;
+@define-color lock_error $urgent;
 EOF
 
 atomic_write "$HOME/.config/mako/colors" <<EOF

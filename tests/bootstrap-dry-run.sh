@@ -30,7 +30,11 @@ run_case() {
     [[ $output == *"(${expected_family} family)"* ]]
     [[ $output == *"$expected_command"* ]]
     [[ $output == *"compositors/sway.conf"* ]]
+    [[ $output == *"lock-screen"* ]]
     [[ $output != *"flatpak install"* ]]
+    if [[ $expected_family == fedora ]]; then
+        [[ $output == *"gtklock"* ]]
+    fi
     printf 'ok - %s\n' "$name"
 }
 
