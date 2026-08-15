@@ -3,6 +3,7 @@ sway
 swaybg
 swayidle
 swaylock
+gtklock
 waybar
 wofi
 foot

@@ -24,7 +24,7 @@ session_action() {
 }
 
 case "$choice" in
-    Lock) swaylock -f ;;
+    Lock) "$HOME/.local/bin/lock-screen" ;;
     Suspend) session_action suspend zzz ;;
     'Log out') swaymsg exit ;;
     Reboot) session_action reboot reboot ;;

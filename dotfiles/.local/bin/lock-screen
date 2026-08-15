@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -u
+
+if [[ ${GTKLOCK_DISABLE:-0} == 1 ]] || ! command -v gtklock >/dev/null 2>&1; then
+    exec swaylock -f
+fi
+
+template="$HOME/.config/gtklock/layout.ui"
+style="$HOME/.config/gtklock/style.css"
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/sway-lock"
+runtime_dir="${XDG_RUNTIME_DIR:-/tmp}"
+generated_layout="$runtime_dir/gtklock-layout-${UID}.ui"
+
+display_name=$(getent passwd "$(id -un)" | cut -d: -f5 | cut -d, -f1)
+display_name=${display_name:-$(id -un)}
+# GtkBuilder XML needs escaping. Account display names should be plain text, so
+# discard punctuation that could be interpreted as markup.
+display_name=${display_name//[^[:alnum:] ._-]/}
+
+if [[ -f $template ]]; then
+    temporary_layout=$(mktemp "${generated_layout}.XXXXXX")
+    while IFS= read -r line || [[ -n $line ]]; do
+        printf '%s\n' "${line//@USER_NAME@/$display_name}"
+    done <"$template" >"$temporary_layout"
+    mv "$temporary_layout" "$generated_layout"
+fi
+
+gtklock_args=(
+    gtklock
+    --daemonize
+    --time-format '%-I:%M %p'
+    --date-format '%A, %B %-d'
+)
+
+[[ -f $style ]] && gtklock_args+=(--style "$style")
+[[ -f $generated_layout ]] && gtklock_args+=(--layout "$generated_layout")
+[[ -f $cache_dir/background.png ]] && \
+    gtklock_args+=(--background "$cache_dir/background.png")
+
+exec "${gtklock_args[@]}"

@@ -22,6 +22,7 @@ for generated in \
     .config/sway/colors.conf \
     .config/waybar/colors.css \
     .config/wofi/colors.css \
+    .config/gtklock/colors.css \
     .config/mako/colors \
     .config/foot/colors.ini \
     .config/gtk-3.0/colors.css \
@@ -29,10 +30,12 @@ for generated in \
     [[ -s $test_dir/home/$generated ]]
 done
 
+[[ -s $test_dir/home/.cache/sway-lock/background.png ]]
+
 grep -q 'Generated from the active wallpaper' \
     "$test_dir/home/.config/sway/colors.conf"
 if grep -Rqs '/home/michael' "$test_dir/home"; then
     printf 'not ok - generated theme contains a hard-coded home path\n' >&2
     exit 1
 fi
-printf 'ok - wallpaper palette is generated for every configured component\n'
+printf 'ok - wallpaper palette and lock background are generated for every configured component\n'

@@ -262,10 +262,12 @@ install_managed 0644 "$repo_dir/dotfiles/.config/mako/config" "$HOME/.config/mak
 install_managed 0644 "$repo_dir/dotfiles/.config/foot/foot.ini" "$HOME/.config/foot/foot.ini"
 install_managed 0644 "$repo_dir/dotfiles/.config/gtk-3.0/gtk.css" "$HOME/.config/gtk-3.0/gtk.css"
 install_managed 0644 "$repo_dir/dotfiles/.config/gtk-4.0/gtk.css" "$HOME/.config/gtk-4.0/gtk.css"
+install_managed 0644 "$repo_dir/dotfiles/.config/gtklock/layout.ui" "$HOME/.config/gtklock/layout.ui"
+install_managed 0644 "$repo_dir/dotfiles/.config/gtklock/style.css" "$HOME/.config/gtklock/style.css"
 install_managed 0644 "$repo_dir/dotfiles/.config/xdg-desktop-portal/sway-portals.conf" \
     "$HOME/.config/xdg-desktop-portal/sway-portals.conf"
 
-for script in apply-wallpaper-theme sway-autotiling sway-power-menu \
+for script in apply-wallpaper-theme lock-screen sway-autotiling sway-power-menu \
     sway-screenshot sway-session-start sway-wallpaper-picker; do
     install_managed 0755 "$repo_dir/dotfiles/.local/bin/$script" "$HOME/.local/bin/$script"
 done
@@ -285,6 +287,7 @@ for colors_file in \
     wofi/colors.css \
     mako/colors \
     foot/colors.ini \
+    gtklock/colors.css \
     gtk-3.0/colors.css \
     gtk-4.0/colors.css; do
     install_default 0644 "$repo_dir/dotfiles/.config/$colors_file" "$HOME/.config/$colors_file"

@@ -1,0 +1,8 @@
+/* Default palette. apply-wallpaper-theme regenerates this file. */
+@define-color lock_surface #171b22;
+@define-color lock_surface_alt #252b34;
+@define-color lock_fg #f2f4f7;
+@define-color lock_muted #b9c0ca;
+@define-color lock_accent #88c0d0;
+@define-color lock_outline #596370;
+@define-color lock_error #ff6b6b;
