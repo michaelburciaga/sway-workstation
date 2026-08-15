@@ -265,8 +265,8 @@ install_managed 0644 "$repo_dir/dotfiles/.config/gtk-4.0/gtk.css" "$HOME/.config
 install_managed 0644 "$repo_dir/dotfiles/.config/xdg-desktop-portal/sway-portals.conf" \
     "$HOME/.config/xdg-desktop-portal/sway-portals.conf"
 
-for script in apply-wallpaper-theme sway-power-menu sway-screenshot \
-    sway-session-start sway-wallpaper-picker; do
+for script in apply-wallpaper-theme sway-autotiling sway-power-menu \
+    sway-screenshot sway-session-start sway-wallpaper-picker; do
     install_managed 0755 "$repo_dir/dotfiles/.local/bin/$script" "$HOME/.local/bin/$script"
 done
 
